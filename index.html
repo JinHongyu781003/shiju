@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f3ec">
+  <meta name="description" content="拾句：把散落的词，拼成自己的诗。一个可以剪词、拼贴、排版并导出高清图片的文字创作工作台。">
+  <title>拾句 · 文字拼贴诗</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./engine.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#workspace">跳到拼贴画布</a>
+<header class="site-header">
+  <a class="brand" href="#workspace" aria-label="回到工作台"><span class="brand-mark">拾</span><span class="brand-name">拾句<span>WORD COLLAGE STUDIO</span></span></a>
+  <span class="header-caption">一张纸，留给此刻的自己。</span>
+  <div class="header-actions"><button class="text-button" id="sample-button" type="button">示例作品</button><button class="text-button" id="help-button" type="button">使用指南</button><button class="button button-ink" id="new-button" type="button"><span aria-hidden="true">＋</span> 新作品</button></div>
+</header>
+<main>
+  <section class="desk-heading" aria-labelledby="intro-title"><h1 id="intro-title">写一张诗，<em>留一点白。</em></h1><p>词语在左边，感觉在纸上。</p></section>
+  <section class="studio" id="workspace" aria-label="文字拼贴工作台">
+    <aside class="word-panel panel" aria-labelledby="words-title">
+      <div class="panel-heading"><div><h2 id="words-title">词语抽屉</h2><p class="drawer-caption">拾起喜欢的，放上纸面。</p></div><span class="tiny-stamp" aria-hidden="true">拾字<br>成诗</span></div>
+      <div class="tabs" role="tablist" aria-label="词语来源"><button type="button" id="tab-packs" role="tab" aria-selected="true" aria-controls="panel-packs">主题词语</button><button type="button" id="tab-source" role="tab" aria-selected="false" aria-controls="panel-source" tabindex="-1">剪我的文字</button></div>
+      <div id="panel-packs" role="tabpanel" aria-labelledby="tab-packs">
+        <label class="sr-only" for="word-pack">选择主题词语包</label><select id="word-pack" class="select-control"><option value="letter">没有寄出的信</option><option value="rain">夜行与雨</option><option value="theatre">散场以后</option><option value="journey">去远方</option></select>
+        <p class="small-note" id="pack-description"></p><div id="pack-words" class="word-bank" aria-label="主题词语，点击加入画布"></div><p class="bank-hint">点一个词，让它落在纸上。<span>同一个词，也可以用很多次。</span></p>
+      </div>
+      <div id="panel-source" role="tabpanel" aria-labelledby="tab-source" hidden>
+        <label class="field-label" for="source-text">放入你写过的文字</label><textarea id="source-text" rows="7" maxlength="12000" placeholder="一段日记、一封信，或写到一半的故事……"></textarea><div class="source-actions"><span id="selection-label" class="small-note">选中想留下的词句</span><button class="button button-small button-ink" id="cut-button" type="button" disabled>剪成纸片</button></div>
+        <div class="collected-heading"><span class="field-label">剪下来的词 <span id="cut-count">0</span></span><button class="text-button" id="clear-bank-button" type="button" hidden>清空词盘</button></div><div id="cut-words" class="word-bank" aria-label="剪下来的词语，点击加入画布"><p class="empty-note">词语会留在这里，等你重新安排。</p></div>
+      </div>
+      <div class="quick-add"><label class="field-label" for="quick-text">还差一个词？自己补上</label><form id="quick-form"><input id="quick-text" type="text" maxlength="120" placeholder="写下一个词或一句话" autocomplete="off"><button type="submit" aria-label="把新词加入画布">＋</button></form></div>
+      <div class="decoration-section"><span class="field-label">一点小装饰</span><div class="decoration-buttons"><button data-decoration="tape" type="button"><span class="mini-tape" aria-hidden="true"></span>胶带</button><button data-decoration="underline" type="button"><span aria-hidden="true">〰</span>划线</button><button data-decoration="stamp" type="button"><span class="mini-seal" aria-hidden="true">句</span>印章</button></div></div>
+    </aside>
+    <section class="canvas-panel" aria-labelledby="canvas-title">
+      <div class="canvas-topbar"><div class="project-title"><label for="project-name" class="sr-only">作品名称</label><input id="project-name" maxlength="40" value="今晚的风" aria-label="作品名称"><span id="save-status" role="status"><i></i> 已自动保存</span></div><div class="history-buttons"><button class="icon-button" id="undo-button" type="button" aria-label="撤销" title="撤销 Ctrl / ⌘ + Z">↶</button><button class="icon-button" id="redo-button" type="button" aria-label="重做" title="重做 Ctrl / ⌘ + Shift + Z">↷</button></div></div>
+      <div class="canvas-meta"><h2 id="canvas-title">你的拼贴画布</h2><span id="canvas-size">3:4 · 900 × 1200</span></div>
+      <div class="canvas-desk" id="canvas-desk"><div class="canvas-wrap" id="canvas-wrap"><canvas id="poem-canvas" width="900" height="1200" tabindex="0" aria-label="拼贴画布。点击选中纸片；选中后使用方向键移动，Delete 删除。">你的浏览器需要支持 Canvas 才能编辑拼贴。</canvas></div></div>
+      <div class="canvas-bottom"><span id="canvas-tip"><span aria-hidden="true">✧</span> 点击选中 · 拖动排列 · 拖圆点旋转</span><button class="text-button" id="clear-button" type="button">清空画布</button></div>
+    </section>
+    <aside class="settings-panel panel" aria-labelledby="settings-title">
+      <div class="panel-heading settings-heading"><div><h2 id="settings-title">纸张与气氛</h2><p class="drawer-caption">为这张诗，找一个样子。</p></div></div>
+      <div class="inspector" id="inspector" hidden>
+        <div class="inspector-heading"><span class="field-label" id="selected-label">正在编辑纸片</span><button class="text-button" id="deselect-button" type="button">完成</button></div>
+        <div id="text-controls"><label class="sr-only" for="item-text">纸片文字</label><textarea id="item-text" rows="2" maxlength="120" aria-label="纸片文字"></textarea><div class="control-row"><label class="field-label" for="item-font">字形</label><select id="item-font"><option value="serif">宋体 · 安静</option><option value="sans">黑体 · 直接</option></select></div><label class="range-label" for="item-size">字号 <output id="item-size-value">64</output></label><input id="item-size" type="range" min="20" max="140" step="1" value="64"><span class="field-label">纸片边缘</span><div class="segmented" id="paper-options" aria-label="纸片边缘"><button type="button" data-paper="clean" aria-pressed="false">裁切</button><button type="button" data-paper="torn" aria-pressed="false">撕边</button><button type="button" data-paper="bare" aria-pressed="false">无底纸</button></div><div class="control-row color-choice"><span class="field-label">文字颜色</span><button type="button" data-ink="normal" aria-label="墨色" aria-pressed="true"><span class="ink-dot normal"></span>墨色</button><button type="button" data-ink="accent" aria-label="朱红" aria-pressed="false"><span class="ink-dot accent"></span>朱红</button></div></div>
+        <label class="range-label" for="item-rotation">旋转 <output id="item-rotation-value">0°</output></label><input id="item-rotation" type="range" min="-180" max="180" step="1" value="0">
+        <details class="position-details"><summary>位置与层次</summary><div class="xy-controls"><label>X <input id="item-x" type="number" step="1" aria-label="纸片横坐标"></label><label>Y <input id="item-y" type="number" step="1" aria-label="纸片纵坐标"></label></div><div class="layer-actions"><button class="button button-small" id="back-button" type="button">移到底层</button><button class="button button-small" id="front-button" type="button">移到顶层</button></div></details>
+        <div class="item-actions"><button class="button button-small" id="duplicate-button" type="button">复制纸片</button><button class="button button-small danger-button" id="delete-button" type="button">删除</button></div>
+      </div>
+      <div class="overall-settings" id="overall-settings">
+        <span class="field-label">纸张与气氛</span><div class="theme-options"><button type="button" data-theme="letter" aria-pressed="true"><span class="theme-swatch swatch-letter"><i>纸</i></span><span>信纸</span></button><button type="button" data-theme="news" aria-pressed="false"><span class="theme-swatch swatch-news"><i>字</i></span><span>剪报</span></button><button type="button" data-theme="night" aria-pressed="false"><span class="theme-swatch swatch-night"><i>幕</i></span><span>散场</span></button></div>
+        <span class="field-label">画布比例</span><div class="segmented ratio-options"><button type="button" data-ratio="portrait" aria-pressed="true"><span class="ratio-shape portrait-shape" aria-hidden="true"></span>竖版 3:4</button><button type="button" data-ratio="square" aria-pressed="false"><span class="ratio-shape square-shape" aria-hidden="true"></span>方形 1:1</button></div>
+        <label class="field-label author-label" for="author-name">落款 <span>可留空</span></label><input id="author-name" type="text" maxlength="24" placeholder="写下你的名字">
+        <p class="settings-note">先摆放，再留白。<br>有些感觉，几个词就足够。</p>
+      </div>
+      <div class="layers-section"><button class="layers-toggle" type="button" id="layers-toggle" aria-expanded="false" aria-controls="layers-list">纸片清单 <span id="item-count">9</span><span aria-hidden="true">⌄</span></button><div id="layers-list" hidden></div></div>
+      <div class="export-section"><button class="button button-rust export-button" id="export-button" type="button">导出高清图片 <span aria-hidden="true">↗</span></button><p class="export-note" id="export-note">PNG · 1800 × 2400 · 无水印</p><div class="project-actions"><button type="button" id="save-project-button">↓ 保存工程</button><button type="button" id="import-project-button">↑ 导入工程</button></div><input type="file" id="import-file" accept=".json,.shiju,application/json" hidden><p class="project-note">工程保留每张纸片，下次接着写。</p></div>
+    </aside>
+  </section>
+  <footer class="site-footer"><span>拾句 <span class="footer-dot">·</span> 给词语一次新的相遇。</span><span>文字留在你的设备里 <span aria-hidden="true">↗</span></span></footer>
+</main>
+<nav class="mobile-toolbar" aria-label="工作台快捷导航"><button type="button" data-jump="canvas">画布</button><button type="button" data-jump="words">词语</button><button type="button" data-jump="settings">编辑</button><button type="button" id="mobile-export">导出图片 ↗</button></nav>
+<dialog id="app-dialog" aria-labelledby="dialog-title"><button class="dialog-close icon-button" type="button" id="dialog-close" aria-label="关闭对话框">×</button><div id="dialog-content"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<noscript><p class="noscript">请启用 JavaScript，使用文字拼贴编辑与导出功能。</p></noscript>
+</body>
+</html>
